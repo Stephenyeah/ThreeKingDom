@@ -1,0 +1,58 @@
+# generated files
+target/
+generated/
+
+# dependencies
+Dependencies.toml
+
+# config files
+Config.toml
+# the config files used for testing, Uncomment the following line if you want to commit the test config files
+#!**/tests/Config.toml
+
+# Compiled object files, intermediates, and binary files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# Visual Studio files
+.vs/
+*.VC.db
+*.VC.opendb
+
+# Mac Xcode project files
+*.xcworkspace
+*.xcuserstate
+*.xcodeproj
+
+# Rider project files
+.idea/
+
+# Compiled Shader caches
+*.sdf
+*.suo
+*.opensdf
+*.log
+*.tlog
+*.obj
+*.pdb
+*.pch
+*.idb
+
+# Auto-generated files from Unreal
+*.generated.*
+*.generated.h
+
+# Ignore user-specific config (local settings, editor layouts, etc.)
+*.user
+*.userprefs
+*.sln.docstates
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Crash dumps
+*.dmp

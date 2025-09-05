@@ -3,6 +3,8 @@
 
 #include "ControllerPawn.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 AControllerPawn::AControllerPawn()
@@ -11,8 +13,17 @@ AControllerPawn::AControllerPawn()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create Capsule Component and set as root component
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapuleComponet"));
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponet"));  
+	RootComponent = CapsuleComponent; 
 
+	//Create Spring arm
+	SpringArm = CreateDefaultSubobject <USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent); // Attach spring arm to root component
+
+	// Create camera
+	Camera = CreateDefaultSubobject <UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName); // Attach camera to end of spring arm
+	Camera->SetProjectionMode(ECameraProjectionMode::Orthographic);      // Set camera to orthographic mode
 }
 
 // Called when the game starts or when spawned

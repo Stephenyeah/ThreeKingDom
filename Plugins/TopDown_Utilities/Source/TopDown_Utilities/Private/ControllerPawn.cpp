@@ -5,6 +5,9 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
 AControllerPawn::AControllerPawn()
@@ -13,7 +16,7 @@ AControllerPawn::AControllerPawn()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create Capsule Component and set as root component
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponet"));  
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));  
 	RootComponent = CapsuleComponent; 
 
 	//Create Spring arm
@@ -24,6 +27,10 @@ AControllerPawn::AControllerPawn()
 	Camera = CreateDefaultSubobject <UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName); // Attach camera to end of spring arm
 	Camera->SetProjectionMode(ECameraProjectionMode::Orthographic);      // Set camera to orthographic mode
+
+	//create FloatingPawnMovementComponent 
+	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovement"));
+
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +38,24 @@ void AControllerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void AControllerPawn::Move(const FInputActionValue& Value)
+{
+	const FVector2D MovementInput = Value.Get<FVector2D>(); // Get the 2D movement vector from the input value
+	if (Controller)
+	{
+		const FRotator Roatation = Controller->GetControlRotation();	// Get the controller's rotation
+		const FRotator YawRotation(0, Roatation.Yaw, 0);	// We only care about yaw rotation for movement
+
+		const FVector Forward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); // Get forward direction vector
+		const FVector Right = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y); // Get forward direction vector
+
+		AddMovementInput(Right, MovementInput.X);			// Move right/left
+		AddMovementInput(Forward, MovementInput.Y);		// Move forward/backward
+
+		AddMovementInput(GetActorForwardVector(), MovementInput.Y);		// Move forward/backward
+	}
 }
 
 // Called every frame
@@ -44,6 +69,12 @@ void AControllerPawn::Tick(float DeltaTime)
 void AControllerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if(UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		// Bind the MoveAction to the Move function
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AControllerPawn::Move);
+	}
 
 }
 

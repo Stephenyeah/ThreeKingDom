@@ -27,7 +27,7 @@ void ATopDownPlayerController::SetupInputComponent()
 	
 	if (Subsystem)
 	{
-		Subsystem->AddMappingContext(DefaultInpuMappingContext, 0); 
+		Subsystem->AddMappingContext(DefaultInpuMappingContext, 0);  // Add the input mapping context with priority 0
 		UE_LOG(LogTemp, Display, TEXT("Input mapping context added.")); 
 	}
 

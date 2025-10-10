@@ -29,6 +29,10 @@
 				"Android",
 				"IOS"
 			]
+		},
+		{
+			"Name": "Water",
+			"Enabled": true
 		}
 	]
 }

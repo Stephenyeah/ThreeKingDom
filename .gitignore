@@ -56,3 +56,12 @@ Thumbs.db
 
 # Crash dumps
 *.dmp
+
+
+
+# Ignore large assets
+Content/**
+!Content/Maps/
+!Content/Blueprints/
+!Content/ConfigAssets/
+/Plugins/TopDown_Utilities/Content/Levels/HanZhongMap.umap

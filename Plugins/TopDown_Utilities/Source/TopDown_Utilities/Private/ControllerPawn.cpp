@@ -49,12 +49,12 @@ void AControllerPawn::Move(const FInputActionValue& Value)
 		const FRotator YawRotation(0, Roatation.Yaw, 0);	// We only care about yaw rotation for movement
 
 		const FVector Forward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); // Get forward direction vector
-		const FVector Right = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y); // Get forward direction vector
+		const FVector Right   = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y); // Get forward direction vector
 
 		AddMovementInput(Right, MovementInput.X);			// Move right/left
 		AddMovementInput(Forward, MovementInput.Y);		// Move forward/backward
 
-		AddMovementInput(GetActorForwardVector(), MovementInput.Y);		// Move forward/backward
+		//AddMovementInput(GetActorForwardVector(), MovementInput.Y);		// Move forward/backward
 	}
 }
 

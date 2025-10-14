@@ -21,25 +21,38 @@ class TOPDOWN_UTILITIES_API AControllerPawn : public APawn
 
 private:
 	// Capsule ½ºÄÒ Ì«¿Õ²Õ Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))  //  1. Make it visible in editor and blueprints, but read-only
-		UCapsuleComponent* CapsuleComponent; // 2. Capsule component for collision detection
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))  
+	TObjectPtr<UCapsuleComponent> CapsuleComponent; 
 
 	// Camera boom ÉãÏñÍ·µõ¸Ë positioning the camera behind the character Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))  //  1. Make it visible in editor and blueprints, but read-only
-		USpringArmComponent* SpringArm; // 2. Capsule component for collision detection
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))  
+	TObjectPtr<USpringArmComponent> SpringArm;
 
 	// Follow camera Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))  //  1. Make it visible in editor and blueprints, but read-only
-		UCameraComponent* Camera; // 2. Capsule component for collision detection
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))  
+	TObjectPtr<UCameraComponent> Camera;
+
+
+	// CameraProperties 
+	UPROPERTY(EditAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float CameraZoomSpeed = 10.f;
+	UPROPERTY(EditAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float MaxCameraOrthWidth = 2500.f;
+	UPROPERTY(EditAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	float MinCameraOrthWidth = 300.f;
 
 
 	// Movement Input Action
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta =(AllowPrivateAccess = "true"))
-	UInputAction* MoveAction;
+	TObjectPtr<UInputAction> MoveAction;
+
+	// Zoom Input Action
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> ZoomAction;
 
 	// FloatingPawnMovementComponent
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	UFloatingPawnMovement* FloatingPawnMovement;
+	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovement;
 
 public:
 	// Sets default values for this pawn's properties
@@ -51,6 +64,9 @@ protected:
 
 	// Called for movement input
 	void Move(const FInputActionValue& Value);
+
+	// Called for Zoom input
+	void Zoom(const FInputActionValue& Value);
 
 
 

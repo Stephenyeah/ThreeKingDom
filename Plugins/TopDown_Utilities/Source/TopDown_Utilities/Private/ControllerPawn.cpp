@@ -89,7 +89,7 @@ void AControllerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		// Bind the MoveAction to the Move function
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AControllerPawn::Move);
 
-		//Bond Zoom Fuction to Zoom input action
+		//Bond Zoom Function to Zoom input action
 		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &AControllerPawn::Zoom);
 
 	}

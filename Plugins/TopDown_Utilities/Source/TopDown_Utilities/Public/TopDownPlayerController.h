@@ -11,23 +11,38 @@
  */
 
 class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
+class ATKBasePawn;
 
 UCLASS()
 class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	// 1. Constructor
+
+	
 public:
 	ATopDownPlayerController(); 
+	
+	//  Input Mapping Context
+	UPROPERTY(EditDefaultsOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* DefaultInputMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
-	UInputMappingContext* DefaultInpuMappingContext;
+private:
+	// Select Input action
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> SelectAction;
 
+	// Currently selected BasePawn Actor
+	UPROPERTY()
+	TObjectPtr<ATKBasePawn> SelectedPawn;
 
 protected:
 
 	virtual void SetupInputComponent() override; // Called to bind functionality to input
+
+	void Select(const FInputActionValue& Value);
 	
 };
 

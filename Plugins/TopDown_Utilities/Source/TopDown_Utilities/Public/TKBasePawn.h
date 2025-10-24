@@ -11,6 +11,7 @@ class UCapsuleComponent;
 class USkeletalMeshComponent;
 class UFloatingPawnMovement;
 
+
 UCLASS()
 class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn
 {
@@ -36,6 +37,10 @@ private:
 	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovement;
 
 
+	//Selection Indicator
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStaticMeshComponent> SelectIndicator;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -46,6 +51,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
+	UFUNCTION() 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// Select or Deselect the actor
+	UFUNCTION() 
+	void SelectActor(const bool Select);
+
 
 };

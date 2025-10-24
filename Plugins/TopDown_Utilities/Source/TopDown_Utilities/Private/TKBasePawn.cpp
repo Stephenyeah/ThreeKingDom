@@ -15,13 +15,20 @@ ATKBasePawn::ATKBasePawn()
 	//Create Capsule
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
 	RootComponent = CapsuleComponent;
+	CapsuleComponent->SetCollisionProfileName(UCollisionProfile::Pawn_ProfileName);
 
 	//Create Skeletal mesh
 	SkeletalMesh =  CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	SkeletalMesh->SetupAttachment(RootComponent);
 
-	//Create floating pwan movement
+	//Create floating pawn movement
 	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovement"));
+
+	//Create selection indicator
+	SelectIndicator = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SelectIndicator"));
+	SelectIndicator->SetupAttachment(RootComponent);
+	SelectIndicator->SetHiddenInGame(true);
+	SelectIndicator->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned
@@ -44,4 +51,12 @@ void ATKBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+// Select or Deselect the actor
+void ATKBasePawn::SelectActor(const bool Select)
+{
+	SelectIndicator->SetHiddenInGame(!Select);
+}
+
+
 

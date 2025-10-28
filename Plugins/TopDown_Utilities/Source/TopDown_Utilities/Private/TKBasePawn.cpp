@@ -53,9 +53,15 @@ void ATKBasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 }
 
 // Select or Deselect the actor
-void ATKBasePawn::SelectActor(const bool Select)
+void ATKBasePawn::SelectActorLocal(const bool Select)
 {
 	SelectIndicator->SetHiddenInGame(!Select);
+}
+
+void ATKBasePawn::SelectActor_Implementation(const bool Select)
+{
+	SelectIndicator->SetHiddenInGame(!Select);
+
 }
 
 

@@ -40,6 +40,7 @@ void AControllerPawn::BeginPlay()
 	
 }
 
+//Move Function
 void AControllerPawn::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementInput = Value.Get<FVector2D>(); // Get the 2D movement vector from the input value
@@ -58,12 +59,14 @@ void AControllerPawn::Move(const FInputActionValue& Value)
 	}
 }
 
+//Zoom Function
 void AControllerPawn::Zoom(const FInputActionValue& Value)
 {
+	// Get the zoom direction from the input value
 	const float ZoomDirection = Value.Get<float>();
 	if (Controller != nullptr)
 	{
-		float DesiredOrthoWidth = Camera->OrthoWidth + ZoomDirection*CameraZoomSpeed;
+		float DesiredOrthoWidth = Camera->OrthoWidth - ZoomDirection*CameraZoomSpeed;
 		DesiredOrthoWidth = FMath::Clamp(DesiredOrthoWidth, MinCameraOrthWidth, MaxCameraOrthWidth);
 		Camera->OrthoWidth = DesiredOrthoWidth;
 	}

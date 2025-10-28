@@ -35,7 +35,9 @@ void ATopDownPlayerController::SetupInputComponent()
 		UE_LOG(LogTemp, Display, TEXT("Input mapping context added.")); 
 	}
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent); // Cast the InputComponent to UEnhancedInputComponent
+
+	if (EnhancedInputComponent)
 	{
 		// Bind the MoveAction to the Move function
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Completed, this, &ATopDownPlayerController::Select);
@@ -52,25 +54,26 @@ void ATopDownPlayerController::Select(const FInputActionValue& Value)
 	FHitResult HitResult;
 
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, HitResult);
-	
-	AActor* SelectedActor = HitResult.GetActor();
+
+	//Deselect previous selected actor via interface
+	if (SelectedActor)
+	{
+		if (SelectedActor->GetClass()->ImplementsInterface(USelectableInterface::StaticClass()))
+		{
+			ISelectableInterface::Execute_SelectActor(SelectedActor, false);
+		}
+	}
+
+	SelectedActor = HitResult.GetActor();
 
 	if (SelectedActor)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Selected Actor: %s"), *SelectedActor->GetName());
 
-		// Deselect the previously selected pawn
-		if(SelectedPawn)
+		//select new actor via interface
+		if (SelectedActor -> GetClass() -> ImplementsInterface(USelectableInterface::StaticClass()))
 		{
-			SelectedPawn->SelectActor(false); 
-		}
-
-		SelectedPawn = Cast<ATKBasePawn>(SelectedActor); // Cast the selected actor to ATKBasePawn
-
-		// SelectActor on the selected pawn
-		if (SelectedPawn)
-		{
-			SelectedPawn->SelectActor(true); 
+			ISelectableInterface::Execute_SelectActor(SelectedActor, true);
 		}
 	
 	}

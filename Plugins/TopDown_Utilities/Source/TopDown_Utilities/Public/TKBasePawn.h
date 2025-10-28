@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "SelectableInterface.h"
 #include "TKBasePawn.generated.h"
 
 
@@ -13,7 +14,7 @@ class UFloatingPawnMovement;
 
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn
+class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface
 {
 	GENERATED_BODY()
 
@@ -56,7 +57,9 @@ public:
 
 	// Select or Deselect the actor
 	UFUNCTION() 
-	void SelectActor(const bool Select);
+	void SelectActorLocal(const bool Select);
+
+	void SelectActor_Implementation(const bool Select) override;
 
 
 };

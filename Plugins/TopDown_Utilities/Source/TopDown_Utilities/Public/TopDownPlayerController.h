@@ -36,7 +36,10 @@ private:
 
 	// Currently selected BasePawn Actor
 	UPROPERTY()
-	TObjectPtr<ATKBasePawn> SelectedPawn;
+	TObjectPtr<AActor> SelectedActor;
+
+
+
 
 protected:
 

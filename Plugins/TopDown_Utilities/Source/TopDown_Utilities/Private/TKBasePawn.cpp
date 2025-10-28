@@ -4,6 +4,7 @@
 #include "TKBasePawn.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
@@ -38,10 +39,46 @@ void ATKBasePawn::BeginPlay()
 	
 }
 
+void ATKBasePawn::Move()
+{
+	if (!bMoving)
+	{
+		return;
+	}
+
+	FVector MoveDirection = (MoveTargetLocation - GetActorLocation());
+
+	// Early return if distance is reached.
+	if (MoveDirection.Length() < AcceptanceDistance)
+	{
+		bMoving = false;
+		return;
+	}
+
+
+	MoveDirection.Normalize(1);
+	AddMovementInput(MoveDirection, 1.f);
+
+
+	FRotator DesiredRotation = UKismetMathLibrary::MakeRotFromX(MoveDirection);
+	DesiredRotation.Pitch = 0;
+	DesiredRotation.Roll = 0;
+
+	FRotator NewRotation = FMath::RInterpTo(GetActorRotation(), DesiredRotation, GetWorld()->GetDeltaSeconds(), CharacterTurnSpeed);
+
+	SetActorRotation(NewRotation);
+	
+
+}
+
 // Called every frame
 void ATKBasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
+
+	Move();
 
 }
 
@@ -69,7 +106,7 @@ void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 
 	UE_LOG(LogTemp, Display, TEXT("Navigating...."));
 	MoveTargetLocation = TargetLocation+ FVector(0,0, GetDefaultHalfHeight());
-	SetActorLocation(MoveTargetLocation);
+	bMoving = true;
 
 }
 

@@ -48,9 +48,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void Move();
+
 	// Navigation
 	FVector MoveTargetLocation = FVector::ZeroVector;
-	bool bIsMoving = false;
+	bool bMoving = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	float AcceptanceDistance = 20.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	float CharacterTurnSpeed = 5.f;
 
 public:	
 	// Called every frame

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "SelectableInterface.h"
+#include "NavigableInterface.h"
 #include "TKBasePawn.generated.h"
 
 
@@ -14,7 +15,7 @@ class UFloatingPawnMovement;
 
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface
+class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface, public INavigableInterface
 {
 	GENERATED_BODY()
 
@@ -47,6 +48,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Navigation
+	FVector MoveTargetLocation = FVector::ZeroVector;
+	bool bIsMoving = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -60,6 +65,8 @@ public:
 	void SelectActorLocal(const bool Select);
 
 	void SelectActor_Implementation(const bool Select) override;
+
+	void MoveToLocation_Implementation(const FVector TargetLocation) override;
 
 
 };

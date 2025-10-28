@@ -64,5 +64,14 @@ void ATKBasePawn::SelectActor_Implementation(const bool Select)
 
 }
 
+void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
+{
+
+	UE_LOG(LogTemp, Display, TEXT("Navigating...."));
+	MoveTargetLocation = TargetLocation+ FVector(0,0, GetDefaultHalfHeight());
+	SetActorLocation(MoveTargetLocation);
+
+}
+
 
 

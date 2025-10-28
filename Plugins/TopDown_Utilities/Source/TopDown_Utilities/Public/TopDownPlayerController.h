@@ -34,6 +34,12 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SelectAction;
 
+
+	// Command Input action
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> CommandAction;
+
+
 	// Currently selected BasePawn Actor
 	UPROPERTY()
 	TObjectPtr<AActor> SelectedActor;
@@ -46,6 +52,8 @@ protected:
 	virtual void SetupInputComponent() override; // Called to bind functionality to input
 
 	void Select(const FInputActionValue& Value);
+
+	void CommandSelectedActor(const FInputActionValue& Value);
 	
 };
 

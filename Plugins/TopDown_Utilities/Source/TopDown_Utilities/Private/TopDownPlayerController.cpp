@@ -42,17 +42,18 @@ void ATopDownPlayerController::SetupInputComponent()
 		// Bind the MoveAction to the Move function
 		EnhancedInputComponent->BindAction(SelectAction, ETriggerEvent::Completed, this, &ATopDownPlayerController::Select);
 
+		// Bind the CommandAction to the CommandSelectedActor function
+		EnhancedInputComponent->BindAction(CommandAction, ETriggerEvent::Completed, this, &ATopDownPlayerController::CommandSelectedActor);
 
 	}
 }
 
-
+// Select action implementation
 void ATopDownPlayerController::Select(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Display, TEXT("Select action!"));
 
 	FHitResult HitResult;
-
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, HitResult);
 
 	//Deselect previous selected actor via interface
@@ -76,5 +77,27 @@ void ATopDownPlayerController::Select(const FInputActionValue& Value)
 			ISelectableInterface::Execute_SelectActor(SelectedActor, true);
 		}
 	
+	}
+}
+
+// Command action implementation
+void ATopDownPlayerController::CommandSelectedActor(const FInputActionValue& Value)
+{
+	if (SelectedActor)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Command action on Selected Actor: %s"), *SelectedActor->GetName());
+
+		if(SelectedActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
+		{
+			FHitResult HitResult;
+			GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, HitResult);
+
+			if (HitResult.bBlockingHit)
+			{
+				INavigableInterface::Execute_MoveToLocation(SelectedActor, HitResult.Location);
+			}
+			
+		
+		}
 	}
 }

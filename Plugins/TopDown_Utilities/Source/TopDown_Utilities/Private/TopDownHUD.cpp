@@ -4,7 +4,7 @@
 #include "TopDownHUD.h"
 
 
-
+// Draw the HUD, including the selection rectangle if needed
 void ATopDownHUD::DrawHUD()
 {
 	Super::DrawHUD();
@@ -18,6 +18,7 @@ void ATopDownHUD::DrawHUD()
 	}
 }
 
+// Show the selection rectangle
 void ATopDownHUD::ShowSelectionRect(const FVector2D& InSelectionRectStart, const FVector2D& InSelectionRectSize)
 {
 	SelectionRectStart = InSelectionRectStart;
@@ -26,6 +27,7 @@ void ATopDownHUD::ShowSelectionRect(const FVector2D& InSelectionRectStart, const
 
 }
 
+// Hide the selection rectangle
 void ATopDownHUD::HideSelectionRect()
 {
 	bDrawSelectionRect = false;
@@ -33,6 +35,7 @@ void ATopDownHUD::HideSelectionRect()
 
 }
 
+// Get the currently selected actors
 TArray<AActor*> ATopDownHUD::GetSelectedActors()
 {
 	return  SelectedActors;

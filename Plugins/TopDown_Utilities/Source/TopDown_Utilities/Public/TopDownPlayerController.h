@@ -66,7 +66,7 @@ protected:
 
 	void Select(const FInputActionValue& Value);
 
-	void CommandSelectedActor(const FInputActionValue& Value);
+	void CommandSelectedActors(const FInputActionValue& Value);
 	
 	// Selection box functions
 	void SelectStart(const FInputActionValue& Value);

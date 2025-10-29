@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "TopDownPlayerController.generated.h"
 
+
+
 /**
  * 
  */
@@ -14,6 +16,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class ATKBasePawn;
+class ATopDownHUD;
 
 UCLASS()
 class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController
@@ -39,15 +42,25 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> CommandAction;
 
-
 	// Currently selected BasePawn Actor
 	UPROPERTY()
 	TObjectPtr<AActor> SelectedActor;
 
+	UPROPERTY()
+	TObjectPtr<ATopDownHUD> TopDownHUD;
 
+
+
+	// Selection box variables
+	FVector2D SelectionStartPosition;
+	FVector2D SelectionSize;
+
+	TArray<AActor*> SelectedActors;
 
 
 protected:
+
+	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override; // Called to bind functionality to input
 
@@ -55,6 +68,11 @@ protected:
 
 	void CommandSelectedActor(const FInputActionValue& Value);
 	
+	// Selection box functions
+	void SelectStart(const FInputActionValue& Value);
+	void SelectOnGoing(const FInputActionValue& Value);
+	void SelectEnd(const FInputActionValue& Value);
+	void SelectMultipleActors();
 };
 
 

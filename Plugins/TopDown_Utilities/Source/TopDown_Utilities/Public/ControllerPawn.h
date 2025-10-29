@@ -68,7 +68,7 @@ protected:
 	// Called for Zoom input
 	void Zoom(const FInputActionValue& Value);
 
-
+	void EdgeScrollWithMouse();
 
 public:	
 	// Called every frame

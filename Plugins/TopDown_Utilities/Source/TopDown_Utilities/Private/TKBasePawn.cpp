@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "AIController.h"
 
 // Sets default values
 ATKBasePawn::ATKBasePawn()
@@ -17,6 +18,7 @@ ATKBasePawn::ATKBasePawn()
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
 	RootComponent = CapsuleComponent;
 	CapsuleComponent->SetCollisionProfileName(UCollisionProfile::Pawn_ProfileName);
+	CapsuleComponent->SetCanEverAffectNavigation(false);
 
 	//Create Skeletal mesh
 	SkeletalMesh =  CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
@@ -39,7 +41,7 @@ void ATKBasePawn::BeginPlay()
 	
 }
 
-void ATKBasePawn::Move()
+void ATKBasePawn::OrientPawnToMovementDirection()
 {
 	if (!bMoving)
 	{
@@ -57,7 +59,7 @@ void ATKBasePawn::Move()
 
 
 	MoveDirection.Normalize(1);
-	AddMovementInput(MoveDirection, 1.f);
+	//AddMovementInput(MoveDirection, 1.f);
 
 
 	FRotator DesiredRotation = UKismetMathLibrary::MakeRotFromX(MoveDirection);
@@ -78,7 +80,7 @@ void ATKBasePawn::Tick(float DeltaTime)
 
 
 
-	Move();
+	OrientPawnToMovementDirection();
 
 }
 
@@ -107,6 +109,9 @@ void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 	UE_LOG(LogTemp, Display, TEXT("Navigating...."));
 	MoveTargetLocation = TargetLocation+ FVector(0,0, GetDefaultHalfHeight());
 	bMoving = true;
+
+	AAIController* PawnAIController = Cast<AAIController>(GetController());
+	PawnAIController->MoveToLocation(TargetLocation, AcceptanceDistance);
 
 }
 

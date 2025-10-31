@@ -25,7 +25,9 @@ public class TopDown_Utilities : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
+
 				"Core",
+                "GameplayAbilities"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -39,7 +41,8 @@ public class TopDown_Utilities : ModuleRules
 				"Slate",
 				"SlateCore",
                 "EnhancedInput",
-				"AIModule",
+				"AIModule",             
+                
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

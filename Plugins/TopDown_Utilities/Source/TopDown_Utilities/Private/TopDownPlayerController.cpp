@@ -92,61 +92,6 @@ void ATopDownPlayerController::Select(const FInputActionValue& Value)
 	}
 }
 
-// Command action implementation
-void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Value)
-{
-	if (!TopDownHUD || SelectedActors.Num() == 0)
-		return;
-
-	FHitResult HitResult;
-	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, HitResult);
-
-	if (!HitResult.bBlockingHit)
-			return;				//Early return in case of invalid target location
-				
-
-	
-	if (SelectedActors.Num() > 0) // If there are multiple selected actors
-	{
-		const FVector CenterLocation = HitResult.Location;
-		const int32 NumActors = SelectedActors.Num();
-		const int32 UnitsPerRow = FMath::CeilToInt(FMath::Sqrt((float)NumActors));
-		const float Spacing = 100.f; // Spacing between actors in the formation
-
-		// Loop through each selected actor and calculate its position in the formation
-		for (int32 Index = 0; Index < NumActors; Index++)
-		{
-			AActor* SomeActor = SelectedActors[Index];
-			if (!SomeActor || !SomeActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
-				continue;
-
-			// Calculate row and column based on index
-			const int32 Row = Index / UnitsPerRow;
-			const int32 Col = Index % UnitsPerRow;
-
-			// Calculate offset from center
-			const float HalfSize = (UnitsPerRow - 1) * 0.5f;
-			const FVector Offset = FVector(
-				(Col - HalfSize) * Spacing,
-				(Row - HalfSize) * Spacing,
-				0.f
-			);
-
-			// Command the actor to move to its position in the formation
-			INavigableInterface::Execute_MoveToLocation(SomeActor, CenterLocation + Offset);
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Display, TEXT("Command action on Selected Actor: %s"), *SelectedActor->GetName());
-
-		if(SelectedActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
-		{				
-				INavigableInterface::Execute_MoveToLocation(SelectedActor, HitResult.Location);					
-		}
-	}
-}
-
 // Selection rectangle functions
 void ATopDownPlayerController::SelectStart(const FInputActionValue& Value)
 {
@@ -222,6 +167,61 @@ void ATopDownPlayerController::SelectMultipleActors()
 				}
 
 			}
+		}
+	}
+}
+
+// Command action implementation
+void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Value)
+{
+	if (!TopDownHUD || SelectedActors.Num() == 0)
+		return;
+
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECollisionChannel::ECC_Camera, false, HitResult);
+
+	if (!HitResult.bBlockingHit)
+		return;				//Early return in case of invalid target location
+
+
+
+	if (SelectedActors.Num() > 0) // If there are multiple selected actors
+	{
+		const FVector CenterLocation = HitResult.Location;
+		const int32 NumActors = SelectedActors.Num();
+		const int32 UnitsPerRow = FMath::CeilToInt(FMath::Sqrt((float)NumActors));
+		const float Spacing = 100.f; // Spacing between actors in the formation
+
+		// Loop through each selected actor and calculate its position in the formation
+		for (int32 Index = 0; Index < NumActors; Index++)
+		{
+			AActor* SomeActor = SelectedActors[Index];
+			if (!SomeActor || !SomeActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
+				continue;
+
+			// Calculate row and column based on index
+			const int32 Row = Index / UnitsPerRow;
+			const int32 Col = Index % UnitsPerRow;
+
+			// Calculate offset from center
+			const float HalfSize = (UnitsPerRow - 1) * 0.5f;
+			const FVector Offset = FVector(
+				(Col - HalfSize) * Spacing,
+				(Row - HalfSize) * Spacing,
+				0.f
+			);
+
+			// Command the actor to move to its position in the formation
+			INavigableInterface::Execute_MoveToLocation(SomeActor, CenterLocation + Offset);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("Command action on Selected Actor: %s"), *SelectedActor->GetName());
+
+		if (SelectedActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
+		{
+			INavigableInterface::Execute_MoveToLocation(SelectedActor, HitResult.Location);
 		}
 	}
 }

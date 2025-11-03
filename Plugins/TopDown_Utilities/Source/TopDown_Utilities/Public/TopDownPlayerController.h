@@ -18,6 +18,8 @@ struct FInputActionValue;
 class ATKBasePawn;
 class ATopDownHUD;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorsSelectedDelegate, const TArray<AActor*>&, SelectedActors);
+
 UCLASS()
 class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController
 {

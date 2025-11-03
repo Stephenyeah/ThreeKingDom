@@ -73,8 +73,8 @@ void AControllerPawn::Zoom(const FInputActionValue& Value)
 }
 
 void AControllerPawn::EdgeScrollWithMouse()
-{
-	TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(GetController());
+{	
+	TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(GetController()); // Get the PlayerController
 	if (!PlayerController)
 		return;
 
@@ -88,19 +88,19 @@ void AControllerPawn::EdgeScrollWithMouse()
 		FVector2D ViewportSize;
 		if (GEngine && GEngine-> GameViewport)
 		{
-			GEngine->GameViewport->GetViewportSize(ViewportSize);
+			GEngine->GameViewport->GetViewportSize(ViewportSize); // Get the size of the viewport
 
-			float EdgeThreshold = 10.f;
-			FVector2D MovementInput = FVector2D::ZeroVector;
+			float EdgeThreshold = 10.f;						// Define the edge threshold in pixels
+			FVector2D MovementInput = FVector2D::ZeroVector; // Initialize movement input vector
 				
-			if (MouseX < EdgeThreshold)
+			if (MouseX < EdgeThreshold)						// Check if mouse is near the left edge
 			{
 				UE_LOG(LogTemp, Display, TEXT("Left"));
-				MovementInput.X = -1.f;
+				MovementInput.X = -1.f;						// Move left
 			}
-			if (MouseX > ViewportSize.X-EdgeThreshold)
+			if (MouseX > ViewportSize.X - EdgeThreshold)		
 			{
-				UE_LOG(LogTemp, Display, TEXT("Right"));
+				UE_LOG(LogTemp, Display, TEXT("Right"));		
 				MovementInput.X = 1.f;
 			}
 			if (MouseY < EdgeThreshold)
@@ -115,9 +115,9 @@ void AControllerPawn::EdgeScrollWithMouse()
 			}
 
 
-			if (!MovementInput.IsZero())
+			if (!MovementInput.IsZero())				// If there is movement input, call the Move function
 			{
-				Move(FInputActionValue(MovementInput));
+				Move(FInputActionValue(MovementInput));		// Call Move function with the calculated movement input
 			}
 		}
 

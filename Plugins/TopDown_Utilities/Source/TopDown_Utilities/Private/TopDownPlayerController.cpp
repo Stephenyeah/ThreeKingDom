@@ -168,6 +168,7 @@ void ATopDownPlayerController::SelectMultipleActors()
 
 			}
 		}
+		OnActorsSelected.Broadcast(SelectedActors); // Broadcast the delegate
 	}
 }
 
@@ -224,4 +225,5 @@ void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Va
 			INavigableInterface::Execute_MoveToLocation(SelectedActor, HitResult.Location);
 		}
 	}
+
 }

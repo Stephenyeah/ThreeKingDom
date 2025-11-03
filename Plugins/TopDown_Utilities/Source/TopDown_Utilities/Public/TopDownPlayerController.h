@@ -18,7 +18,8 @@ struct FInputActionValue;
 class ATKBasePawn;
 class ATopDownHUD;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorsSelectedDelegate, const TArray<AActor*>&, SelectedActors);
+// Delegate for when actors are selected
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorsSelectedDelegate, const TArray<AActor*>&, SelectedActors); 
 
 UCLASS()
 class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController
@@ -38,6 +39,9 @@ private:
 	// Select Input action
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SelectAction;
+
+	UPROPERTY(BlueprintAssignable, Category = "Delegates")
+	FOnActorsSelectedDelegate OnActorsSelected;
 
 
 	// Command Input action

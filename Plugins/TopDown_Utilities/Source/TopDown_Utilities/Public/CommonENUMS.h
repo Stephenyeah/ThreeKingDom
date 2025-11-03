@@ -14,3 +14,12 @@ enum class EResourceTypes : uint8
 };
 
 
+UENUM(BlueprintType)
+enum class EPawnType : uint8
+{
+	Cavalry UMETA(DisplayName = "Cavalry"),
+	Spearmen UMETA(DisplayName = "Spearmen"),
+	Infantry UMETA(DisplayName = "Infantry"),
+	Archers UMETA(DisplayName = "Archers"),
+
+};

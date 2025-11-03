@@ -6,7 +6,11 @@
 #include "GameFramework/Pawn.h"
 #include "SelectableInterface.h"
 #include "NavigableInterface.h"
+#include "CommonENUMS.h"
+#include "BasePawnInterface.h"
 #include "TKBasePawn.generated.h"
+
+
 
 
 class UCapsuleComponent;
@@ -15,7 +19,7 @@ class UFloatingPawnMovement;
 
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface, public INavigableInterface
+class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface, public INavigableInterface, public IBasePawnInterface
 {
 	GENERATED_BODY()
 
@@ -33,16 +37,17 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
 
-
 	//Floating Pawn movement component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UFloatingPawnMovement> FloatingPawnMovement;
-
 
 	//Selection Indicator
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> SelectIndicator;
 
+	//Pawn Type
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	EPawnType PawnType = EPawnType::Infantry;
 
 protected:
 	// Called when the game starts or when spawned
@@ -75,6 +80,8 @@ public:
 	void SelectActor_Implementation(const bool Select) override;
 
 	void MoveToLocation_Implementation(const FVector TargetLocation) override;
+
+	EPawnType GetPawnType_Implementation() override;
 
 
 };

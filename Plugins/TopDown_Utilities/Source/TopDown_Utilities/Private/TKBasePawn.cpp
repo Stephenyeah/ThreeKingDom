@@ -115,5 +115,10 @@ void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 
 }
 
+EPawnType ATKBasePawn::GetPawnType_Implementation()
+{
+	return PawnType;
+}
+
 
 

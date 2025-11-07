@@ -2,11 +2,14 @@
 
 
 #include "TKBasePawn.h"
+#include "TKActorComponent.h"
+#include "TKCombatComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "AIController.h"
+
 
 // Sets default values
 ATKBasePawn::ATKBasePawn()
@@ -32,6 +35,12 @@ ATKBasePawn::ATKBasePawn()
 	SelectIndicator->SetupAttachment(RootComponent);
 	SelectIndicator->SetHiddenInGame(true);
 	SelectIndicator->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Fill out your copyright notice in the Description page of Project Settings.
+	ActorStatsComponent = CreateDefaultSubobject<UTKActorComponent>(TEXT("ActorStatsComponent"));
+
+	// Create Combat Component
+	CombatComponent = CreateDefaultSubobject<UTKCombatComponent>(TEXT("CombatComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -103,6 +112,7 @@ void ATKBasePawn::SelectActor_Implementation(const bool Select)
 
 }
 
+// Move to location
 void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 {
 
@@ -115,11 +125,13 @@ void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 
 }
 
+// Get Actor Type
 EActorType ATKBasePawn::GetActorType_Implementation()
 {
 	return ActorType;
 }
 
+// Faction Interface
 void ATKBasePawn::SetFaction_Implementation(int32 NewFaction)
 {
 	FactionID = NewFaction;
@@ -130,6 +142,23 @@ int32 ATKBasePawn::GetFaction_Implementation()
 	return FactionID;
 }
 
+// Attack Target
+void ATKBasePawn::AttackTarget(AActor* Target)
+{
+	if (!CombatComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] AttackTarget: CombatComponent is null"), *GetName());
+		return;
+	}
+
+	if (!IsValid(Target) || Target == this)
+	{
+		UE_LOG(LogTemp, Display, TEXT("[%s] AttackTarget: invalid target"), *GetName());
+		return;
+	}
+
+	CombatComponent->PerformAttack(Target);
+}
 
 
 

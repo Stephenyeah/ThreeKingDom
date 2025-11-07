@@ -17,6 +17,8 @@
 class UCapsuleComponent;
 class USkeletalMeshComponent;
 class UFloatingPawnMovement;
+class UTKActorComponent;
+class UTKCombatComponent;
 
 
 UCLASS()
@@ -28,6 +30,8 @@ class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterf
 public:
 	// Sets default values for this pawn's properties
 	ATKBasePawn();
+
+
 
 private:
 	//Capsule Component
@@ -53,6 +57,14 @@ private:
 	// Faction ID
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
 	int32 FactionID = 1;
+
+	//actor Stats Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UTKActorComponent> ActorStatsComponent;
+
+	// Combat Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UTKCombatComponent> CombatComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -82,6 +94,14 @@ public:
 	UFUNCTION() 
 	void SelectActorLocal(const bool Select);
 
+
+	// === Combat API ===
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void AttackTarget(AActor* Target);
+
+	UFUNCTION(BlueprintPure, Category = "Combat")
+	UTKCombatComponent* GetCombatComponent() const { return CombatComponent; }
+
 	void SelectActor_Implementation(const bool Select) override;
 
 	void MoveToLocation_Implementation(const FVector TargetLocation) override;
@@ -91,5 +111,7 @@ public:
 	void SetFaction_Implementation(int32 NewFaction) override;
 
 	int32 GetFaction_Implementation() override;
+
+	
 
 };

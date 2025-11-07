@@ -196,6 +196,31 @@ void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Va
 	if (!HitResult.bBlockingHit)
 		return;				//Early return in case of invalid target location
 
+	// Check if the hit actor is an enemy unit
+	AActor* TargetActor = HitResult.GetActor();
+	if (TargetActor && TargetActor->GetClass()->ImplementsInterface(UFactionInterface::StaticClass()))
+	{
+		int32 TargetFaction = IFactionInterface::Execute_GetFaction(TargetActor);
+
+		// If the clicked unit is hostile
+		if (FactionID != TargetFaction)
+		{
+			for (AActor* Selected : SelectedActors)
+			{
+				if (ATKBasePawn* SelectedPawn = Cast<ATKBasePawn>(Selected))
+				{
+					// Confirm our faction
+					if (SelectedPawn->GetFaction_Implementation() == FactionID)
+					{
+						SelectedPawn->AttackTarget(TargetActor);
+					}
+				}
+			}
+			return; // Stop further execution of movement logic
+		}
+	}
+
+
 
 
 	if (SelectedActors.Num() > 0) // If there are multiple selected actors
@@ -203,7 +228,7 @@ void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Va
 		const FVector CenterLocation = HitResult.Location;
 		const int32 NumActors = SelectedActors.Num();
 		const int32 UnitsPerRow = FMath::CeilToInt(FMath::Sqrt((float)NumActors));
-		const float Spacing = 100.f; // Spacing between actors in the formation
+		const float Spacing = 80.f; // Spacing between actors in the formation
 
 		// Loop through each selected actor and calculate its position in the formation
 		for (int32 Index = 0; Index < NumActors; Index++)

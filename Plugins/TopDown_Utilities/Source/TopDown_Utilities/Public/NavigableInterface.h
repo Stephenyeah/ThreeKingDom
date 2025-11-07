@@ -24,4 +24,7 @@ class TOPDOWN_UTILITIES_API INavigableInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Navigable Interface")
 	void MoveToLocation(const FVector TargetLocation);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Navigable Interface")
+	void StopMovement();
 };

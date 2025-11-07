@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "CommonENUMS.h"
+#include "FactionInterface.h"
 #include "TopDownPlayerController.generated.h"
+
 
 
 
@@ -22,7 +25,7 @@ class ATopDownHUD;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorsSelectedDelegate, const TArray<AActor*>&, SelectedActors); 
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController
+class TOPDOWN_UTILITIES_API ATopDownPlayerController : public APlayerController, public IFactionInterface
 {
 	GENERATED_BODY()
 
@@ -55,7 +58,9 @@ private:
 	UPROPERTY()
 	TObjectPtr<ATopDownHUD> TopDownHUD;
 
-
+	// Faction ID
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	int32 FactionID = 1;
 
 	// Selection box variables
 	FVector2D SelectionStartPosition;
@@ -79,6 +84,10 @@ protected:
 	void SelectOnGoing(const FInputActionValue& Value);
 	void SelectEnd(const FInputActionValue& Value);
 	void SelectMultipleActors();
+
+	void SetFaction_Implementation(int32 NewFaction) override;
+
+	int32 GetFaction_Implementation() override;
 };
 
 

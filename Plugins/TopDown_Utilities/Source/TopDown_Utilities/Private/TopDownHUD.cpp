@@ -2,7 +2,7 @@
 
 
 #include "TopDownHUD.h"
-
+#include "TKBasePawn.h"
 
 // Draw the HUD, including the selection rectangle if needed
 void ATopDownHUD::DrawHUD()
@@ -36,7 +36,7 @@ void ATopDownHUD::HideSelectionRect()
 }
 
 // Get the currently selected actors
-TArray<AActor*> ATopDownHUD::GetSelectedActors()
+TArray<ATKBasePawn*> ATopDownHUD::GetSelectedActors()
 {
 	return  SelectedActors;
 
@@ -48,7 +48,7 @@ void ATopDownHUD::SelectActorInRect()
 	SelectedActors.Empty();
 	FVector2D FirstPoint = SelectionRectStart;
 	FVector2D SecondPoint = SelectionRectStart + SelectionRectSize;
-	GetActorsInSelectionRectangle<AActor>(FirstPoint, SecondPoint, SelectedActors, false);
+	GetActorsInSelectionRectangle<ATKBasePawn>(FirstPoint, SecondPoint, SelectedActors, false);
 
 	// Clear previous selection
 	bSelectActors = false;

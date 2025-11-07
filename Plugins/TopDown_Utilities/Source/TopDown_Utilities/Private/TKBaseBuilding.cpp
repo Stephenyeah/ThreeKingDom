@@ -43,3 +43,13 @@ void ATKBaseBuilding::SelectActor_Implementation(const bool Select)
 	SelectedIndicator->SetHiddenInGame(!Select);  // Show or hide selection indicator
 }
 
+void ATKBaseBuilding::SetFaction_Implementation(int32 NewFaction)
+{
+	FactionID = NewFaction;
+}
+
+int32 ATKBaseBuilding::GetFaction_Implementation()
+{
+	return FactionID;
+}
+

@@ -41,8 +41,8 @@ public class TopDown_Utilities : ModuleRules
 				"Slate",
 				"SlateCore",
                 "EnhancedInput",
-				"AIModule",             
-                
+				"AIModule",
+                "GameplayTags"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

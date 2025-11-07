@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "SelectableInterface.h"
 #include "GameFramework/Actor.h"
+#include "FactionInterface.h"
 #include "TKBaseBuilding.generated.h"
 
 class UBoxComponent;
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATKBaseBuilding : public AActor, public ISelectableInterface
+class TOPDOWN_UTILITIES_API ATKBaseBuilding : public AActor, public ISelectableInterface, public IFactionInterface
 {
 	GENERATED_BODY()
 	
@@ -32,6 +33,10 @@ private:
 	TObjectPtr<UStaticMeshComponent> SelectedIndicator;
 
 
+	// Faction ID
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	int32 FactionID = 1;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,4 +48,7 @@ public:
 	// Implement Selectable Interface
 	void SelectActor_Implementation(const bool Select) override;
 
+	void SetFaction_Implementation(int32 NewFaction) override;
+
+	int32 GetFaction_Implementation() override;
 };

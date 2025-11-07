@@ -7,7 +7,8 @@
 #include "SelectableInterface.h"
 #include "NavigableInterface.h"
 #include "CommonENUMS.h"
-#include "BasePawnInterface.h"
+#include "BaseActorInterface.h"
+#include "FactionInterface.h"
 #include "TKBasePawn.generated.h"
 
 
@@ -19,7 +20,7 @@ class UFloatingPawnMovement;
 
 
 UCLASS()
-class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface, public INavigableInterface, public IBasePawnInterface
+class TOPDOWN_UTILITIES_API ATKBasePawn : public APawn, public ISelectableInterface, public INavigableInterface, public IBaseActorInterface, public IFactionInterface
 {
 	GENERATED_BODY()
 
@@ -47,7 +48,11 @@ private:
 
 	//Pawn Type
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
-	EPawnType PawnType = EPawnType::Infantry;
+	EActorType ActorType = EActorType::Infantry;
+
+	// Faction ID
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = "true"))
+	int32 FactionID = 1;
 
 protected:
 	// Called when the game starts or when spawned
@@ -81,7 +86,10 @@ public:
 
 	void MoveToLocation_Implementation(const FVector TargetLocation) override;
 
-	EPawnType GetPawnType_Implementation() override;
+	EActorType GetActorType_Implementation() override;
 
+	void SetFaction_Implementation(int32 NewFaction) override;
+
+	int32 GetFaction_Implementation() override;
 
 };

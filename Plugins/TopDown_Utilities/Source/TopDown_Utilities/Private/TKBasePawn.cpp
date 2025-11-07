@@ -115,10 +115,22 @@ void ATKBasePawn::MoveToLocation_Implementation(const FVector TargetLocation)
 
 }
 
-EPawnType ATKBasePawn::GetPawnType_Implementation()
+EActorType ATKBasePawn::GetActorType_Implementation()
 {
-	return PawnType;
+	return ActorType;
 }
+
+void ATKBasePawn::SetFaction_Implementation(int32 NewFaction)
+{
+	FactionID = NewFaction;
+}
+
+int32 ATKBasePawn::GetFaction_Implementation()
+{
+	return FactionID;
+}
+
+
 
 
 

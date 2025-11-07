@@ -15,11 +15,16 @@ enum class EResourceTypes : uint8
 
 
 UENUM(BlueprintType)
-enum class EPawnType : uint8
+enum class EActorType : uint8
 {
+	// Unit Types
 	Cavalry UMETA(DisplayName = "Cavalry"),
 	Spearmen UMETA(DisplayName = "Spearmen"),
 	Infantry UMETA(DisplayName = "Infantry"),
 	Archers UMETA(DisplayName = "Archers"),
+
+
+	// Buildings Types
+	Building UMETA(DisplayName = "Building")
 
 };

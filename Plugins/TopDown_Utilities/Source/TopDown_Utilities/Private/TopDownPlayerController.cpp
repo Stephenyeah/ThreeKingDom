@@ -152,13 +152,23 @@ void ATopDownPlayerController::SelectMultipleActors()
 		SelectedActors.Empty(); // Clear SelectedActors array
 
 		//Select New Actors
-		TArray<AActor*> AllSelectedActors = TopDownHUD->GetSelectedActors();
+		TArray<ATKBasePawn*> AllSelectedActors = TopDownHUD->GetSelectedActors();
 
 
-		for (AActor* SomeActor : AllSelectedActors)
+		for (ATKBasePawn* SomeActor : AllSelectedActors)
 		{
 			if (SomeActor)
 			{
+				
+				if (SomeActor->GetClass()->ImplementsInterface(UFactionInterface::StaticClass()))
+				{
+					int32 ActorFaction = IFactionInterface::Execute_GetFaction(SomeActor);
+					if (FactionID!= ActorFaction)
+					{
+						continue;
+					}
+				}
+
 				//UE_LOG(LogTemp, Warning, TEXT("Selected Pawn: %s"), *SomeActor->GetName());
 				if (SomeActor->GetClass()->ImplementsInterface(USelectableInterface::StaticClass()))
 				{
@@ -171,6 +181,8 @@ void ATopDownPlayerController::SelectMultipleActors()
 		OnActorsSelected.Broadcast(SelectedActors); // Broadcast the delegate
 	}
 }
+
+
 
 // Command action implementation
 void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Value)
@@ -218,7 +230,16 @@ void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Va
 	}
 	else
 	{
-		UE_LOG(LogTemp, Display, TEXT("Command action on Selected Actor: %s"), *SelectedActor->GetName());
+		//UE_LOG(LogTemp, Display, TEXT("Command action on Selected Actor: %s"), *SelectedActor->GetName());
+
+		if (SelectedActor->GetClass()->ImplementsInterface(UFactionInterface::StaticClass()))
+		{
+			int ActorFaction = IFactionInterface::Execute_GetFaction(SelectedActor);
+			if (FactionID != ActorFaction)
+			{
+				return; //Early retrun in case of faction mistake
+			}
+		}
 
 		if (SelectedActor->GetClass()->ImplementsInterface(UNavigableInterface::StaticClass()))
 		{
@@ -226,4 +247,14 @@ void ATopDownPlayerController::CommandSelectedActors(const FInputActionValue& Va
 		}
 	}
 
+}
+
+void ATopDownPlayerController::SetFaction_Implementation(int32 NewFaction)
+{
+	FactionID = NewFaction;
+}
+
+int32 ATopDownPlayerController::GetFaction_Implementation()
+{
+	return FactionID;
 }
